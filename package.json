@@ -1,0 +1,11 @@
+{
+  "name": "gle_xmd",
+  "version": "2.0.0",
+  "main": "pair.js",
+  "scripts": { "start": "node pair.js" },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.0",
+    "express": "^4.18.2",
+    "pino": "^8.0.0"
+  }
+}
