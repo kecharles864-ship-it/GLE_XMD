@@ -1,6 +1,5 @@
 <p align="center">
   <img src="logo.png"
-</p>
 
 <h1 align="center">🌐 GLE_XMD</h1>
 
