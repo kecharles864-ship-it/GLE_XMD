@@ -1,4 +1,4 @@
-// GLE_XMD - GLE AI
+yh// GLE_XMD - GLE AI
 module.exports = {
   name: 'gleai',
   run: async (sock, m, { args, send }) => {
