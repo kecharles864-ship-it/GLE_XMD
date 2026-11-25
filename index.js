@@ -15,7 +15,7 @@ async function startGLE() {
     sock.ev.on('connection.update', (u) => {
         if (u.connection === 'open') console.log('✅ GLE XMD IMEUNGANISHWA');
     });
-    // Hapa ndipo menu.js na gle_comands zinaitwa
+    // Hapa ndipo menu.js na gle_commands zinaitwa
     require("./menu.js")(sock);
 }
 startGLE();
