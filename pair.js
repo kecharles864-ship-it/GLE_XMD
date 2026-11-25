@@ -223,7 +223,7 @@ app.get('/code', async (req, res) => {
     if (!sock.authState.creds.registered) {
       await new Promise(r => setTimeout(r, 1200));
       let code = await sock.requestPairingCode(num);
-      setTimeout(() => { try { if(fs.existsSync(sessionPath)) fs.rmSync(sessionPath, {recursive:true, force:true}); } catch{} }, 30000);
+      setTimeout(() => { try { if(fs.existsSync(sessionPath)) fs.rmSync(sessionPath, {recursive:true, force:true}); } catch{} }, 180000);
       return res.json({ code });
     } else {
       return res.json({ error: 'Namba hii tayari ime-pair.' });
