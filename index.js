@@ -17,15 +17,33 @@ async function startGLE() {
         if (u.connection === 'open') console.log('✅ GLE XMD IMEUNGANISHWA');
     });
 
-    // Hapa sasa tunaita gle_commands zote kiotomatiki
+    // Pakia commands zote
     const commands = {};
-    const files = fs.readdirSync("./gle_commands");
-    for (let file of files) {
+    // 1. Pakia kutoka gle_commands
+    for (let file of fs.readdirSync("./gle_commands")) {
         const cmd = require(`./gle_commands/${file}`);
         commands[cmd.name] = cmd;
-        console.log(`✅ Command loaded: ${cmd.name}`);
     }
+    // 2. Pakia menu.js (command ya .gle)
+    const gleMenu = require("./menu.js");
+    commands[gleMenu.name] = gleMenu;
 
-    require("./menu.js")(sock, commands);
+    console.log("✅ Commands zimepakiwa:", Object.keys(commands).join(", "));
+
+    // Sikiliza meseji
+    sock.ev.on('messages.upsert', async ({ messages }) => {
+        const m = messages[0];
+        if (!m.message || m.key.fromMe) return;
+        const text = m.message.conversation || m.message.extendedTextMessage?.text || "";
+        if (!text.startsWith(".")) return;
+
+        const args = text.slice(1).trim().split(" ");
+        const cmdName = args.shift().toLowerCase();
+
+        if (commands[cmdName]) {
+            const send = (txt) => sock.sendMessage(m.key.remoteJid, { text: txt }, { quoted: m });
+            await commands[cmdName].run(sock, m, { send, config, args });
+        }
+    });
 }
 startGLE();
