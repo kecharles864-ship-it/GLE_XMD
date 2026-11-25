@@ -2,6 +2,7 @@
 const { default: makeWASocket, useMultiFileAuthState } = require("@whiskeysockets/baileys");
 const pino = require("pino");
 const config = require("./config.js");
+const fs = require("fs");
 
 async function startGLE() {
     const { state, saveCreds } = await useMultiFileAuthState('session');
@@ -15,7 +16,16 @@ async function startGLE() {
     sock.ev.on('connection.update', (u) => {
         if (u.connection === 'open') console.log('✅ GLE XMD IMEUNGANISHWA');
     });
-    // Hapa ndipo menu.js na gle_commands zinaitwa
-    require("./menu.js")(sock);
+
+    // Hapa sasa tunaita gle_commands zote kiotomatiki
+    const commands = {};
+    const files = fs.readdirSync("./gle_commands");
+    for (let file of files) {
+        const cmd = require(`./gle_commands/${file}`);
+        commands[cmd.name] = cmd;
+        console.log(`✅ Command loaded: ${cmd.name}`);
+    }
+
+    require("./menu.js")(sock, commands);
 }
 startGLE();
